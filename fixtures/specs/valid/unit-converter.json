@@ -1,0 +1,68 @@
+{
+  "name": "unit-converter",
+  "description": "Convert lengths between metric and imperial units. Pure computation, no storage.",
+  "env": [],
+  "allowedHosts": [],
+  "storage": "none",
+  "tools": [
+    {
+      "name": "convert_length",
+      "title": "Convert length",
+      "description": "Convert a length value from one unit to another (m, km, mi, ft).",
+      "inputs": [
+        { "name": "value", "description": "The numeric value to convert", "type": "number", "required": true },
+        {
+          "name": "from",
+          "description": "Unit to convert from",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["m", "km", "mi", "ft"]
+        },
+        {
+          "name": "to",
+          "description": "Unit to convert to",
+          "type": "enum",
+          "required": true,
+          "enumValues": ["m", "km", "mi", "ft"]
+        }
+      ],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          { "name": "value", "description": "The converted value", "type": "number", "required": true },
+          { "name": "unit", "description": "The unit of the converted value", "type": "string", "required": true }
+        ]
+      },
+      "sideEffects": "none",
+      "errors": [],
+      "examples": [
+        { "input": { "value": 1, "from": "km", "to": "m" }, "expect": { "ok": true, "contains": { "value": 1000, "unit": "m" } } },
+        { "input": { "value": 1, "from": "parsec", "to": "m" }, "expect": { "ok": false, "errorIncludes": "Input validation error" } }
+      ],
+      "sourceRefs": ["S1"]
+    },
+    {
+      "name": "list_units",
+      "title": "List units",
+      "description": "List the length units this server can convert between.",
+      "inputs": [],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          {
+            "name": "units",
+            "description": "Supported unit symbols",
+            "type": "array",
+            "required": true,
+            "items": "string"
+          }
+        ]
+      },
+      "sideEffects": "none",
+      "errors": [],
+      "examples": [{ "input": {}, "expect": { "ok": true, "contains": { "units": ["m", "km", "mi", "ft"] } } }],
+      "sourceRefs": ["S2"]
+    }
+  ],
+  "openQuestions": []
+}

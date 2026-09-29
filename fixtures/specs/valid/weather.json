@@ -1,0 +1,55 @@
+{
+  "name": "weather-lookup",
+  "description": "Look up current weather for a latitude and longitude using the Open-Meteo API.",
+  "env": [],
+  "allowedHosts": ["api.open-meteo.com"],
+  "storage": "none",
+  "tools": [
+    {
+      "name": "get_current_weather",
+      "title": "Get current weather",
+      "description": "Get the current temperature and wind speed at a latitude and longitude.",
+      "inputs": [
+        {
+          "name": "latitude",
+          "description": "Latitude in decimal degrees",
+          "type": "number",
+          "required": true,
+          "constraints": { "min": -90, "max": 90 }
+        },
+        {
+          "name": "longitude",
+          "description": "Longitude in decimal degrees",
+          "type": "number",
+          "required": true,
+          "constraints": { "min": -180, "max": 180 }
+        },
+        {
+          "name": "units",
+          "description": "Temperature units; defaults to celsius",
+          "type": "enum",
+          "required": false,
+          "enumValues": ["celsius", "fahrenheit"]
+        }
+      ],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          { "name": "temperature", "description": "Current air temperature", "type": "number", "required": true },
+          { "name": "windSpeed", "description": "Current wind speed in km/h", "type": "number", "required": true },
+          { "name": "units", "description": "Units used for temperature", "type": "string", "required": true }
+        ]
+      },
+      "sideEffects": "network",
+      "errors": [
+        { "when": "the weather API is unreachable or returns an error", "message": "Weather service unavailable" }
+      ],
+      "examples": [
+        { "input": { "latitude": 91, "longitude": 0 }, "expect": { "ok": false, "errorIncludes": "Input validation error" } },
+        { "input": { "latitude": 0, "longitude": 0, "units": "kelvin" }, "expect": { "ok": false, "errorIncludes": "Input validation error" } }
+      ],
+      "sourceRefs": ["S1"]
+    }
+  ],
+  "openQuestions": []
+}
