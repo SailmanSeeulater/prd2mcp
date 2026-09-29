@@ -1,0 +1,15 @@
+{
+  "name": "calendar-helper",
+  "description": "A helper for managing calendar events. The PRD does not say what it should do.",
+  "env": [],
+  "allowedHosts": [],
+  "storage": "none",
+  "tools": [],
+  "openQuestions": [
+    "Which calendar service should this connect to (Google Calendar, Outlook, something internal)?",
+    "How does the server authenticate to that service, and where do the credentials come from?",
+    "Which operations are required (list events, create events, delete events, find free time)?",
+    "Should the server be read-only?"
+  ],
+  "assumptions": []
+}

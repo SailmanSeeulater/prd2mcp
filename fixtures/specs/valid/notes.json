@@ -116,5 +116,6 @@
       "sourceRefs": ["S4"]
     }
   ],
-  "openQuestions": []
+  "openQuestions": [],
+  "assumptions": []
 }

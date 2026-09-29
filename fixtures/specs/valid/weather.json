@@ -51,5 +51,6 @@
       "sourceRefs": ["S1"]
     }
   ],
-  "openQuestions": []
+  "openQuestions": [],
+  "assumptions": []
 }

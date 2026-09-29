@@ -1,0 +1,268 @@
+{
+  "name": "notes",
+  "description": "Create, list, fetch, and delete short text notes kept in memory.",
+  "env": [],
+  "allowedHosts": [],
+  "storage": "memory",
+  "tools": [
+    {
+      "name": "create_note",
+      "title": "Create note",
+      "description": "Create a new note with a title and body. Returns the created note.",
+      "inputs": [
+        {
+          "name": "title",
+          "description": "Short title for the note",
+          "type": "string",
+          "required": true,
+          "constraints": {
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        {
+          "name": "body",
+          "description": "Body text of the note",
+          "type": "string",
+          "required": true,
+          "constraints": {
+            "maxLength": 10000
+          }
+        }
+      ],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          {
+            "name": "id",
+            "description": "Unique id of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "description": "Title of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "description": "Body of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "createdAt",
+            "description": "ISO timestamp of creation",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "sideEffects": "write",
+      "errors": [],
+      "examples": [
+        {
+          "input": {
+            "title": "a",
+            "body": "b"
+          },
+          "expect": {
+            "ok": true,
+            "contains": {
+              "title": "a",
+              "body": "b"
+            }
+          }
+        },
+        {
+          "input": {
+            "title": "",
+            "body": "x"
+          },
+          "expect": {
+            "ok": false,
+            "errorIncludes": "Input validation error"
+          }
+        }
+      ],
+      "sourceRefs": [
+        "Create a note"
+      ]
+    },
+    {
+      "name": "list_notes",
+      "title": "List notes",
+      "description": "List all notes currently stored, oldest first.",
+      "inputs": [],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          {
+            "name": "notes",
+            "description": "All stored notes, oldest first",
+            "type": "array",
+            "required": true,
+            "items": "object",
+            "properties": [
+              {
+                "name": "id",
+                "description": "Unique id of the note",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "title",
+                "description": "Title of the note",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "body",
+                "description": "Body of the note",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "createdAt",
+                "description": "ISO timestamp of creation",
+                "type": "string",
+                "required": true
+              }
+            ]
+          }
+        ]
+      },
+      "sideEffects": "read",
+      "errors": [],
+      "examples": [
+        {
+          "input": {},
+          "expect": {
+            "ok": true,
+            "contains": {
+              "notes": []
+            }
+          }
+        }
+      ],
+      "sourceRefs": [
+        "List notes"
+      ]
+    },
+    {
+      "name": "get_note",
+      "title": "Get note",
+      "description": "Fetch a single note by its id.",
+      "inputs": [
+        {
+          "name": "id",
+          "description": "Id of the note",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          {
+            "name": "id",
+            "description": "Unique id of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "description": "Title of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "description": "Body of the note",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "createdAt",
+            "description": "ISO timestamp of creation",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "sideEffects": "read",
+      "errors": [
+        {
+          "when": "no note has the given id",
+          "message": "Note not found: {id}"
+        }
+      ],
+      "examples": [
+        {
+          "input": {
+            "id": "nope"
+          },
+          "expect": {
+            "ok": false,
+            "errorIncludes": "Note not found"
+          }
+        }
+      ],
+      "sourceRefs": [
+        "Get a note"
+      ]
+    },
+    {
+      "name": "delete_note",
+      "title": "Delete note",
+      "description": "Delete a note by its id.",
+      "inputs": [
+        {
+          "name": "id",
+          "description": "Id of the note",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "output": {
+        "kind": "structured",
+        "fields": [
+          {
+            "name": "deleted",
+            "description": "True when the note was deleted",
+            "type": "boolean",
+            "required": true
+          }
+        ]
+      },
+      "sideEffects": "write",
+      "errors": [
+        {
+          "when": "no note has the given id",
+          "message": "Note not found: {id}"
+        }
+      ],
+      "examples": [
+        {
+          "input": {
+            "id": "nope"
+          },
+          "expect": {
+            "ok": false,
+            "errorIncludes": "Note not found: nope"
+          }
+        }
+      ],
+      "sourceRefs": [
+        "Delete a note"
+      ]
+    }
+  ],
+  "openQuestions": [],
+  "assumptions": [
+    "createdAt is an ISO 8601 UTC timestamp string, because the PRD says only 'the time it was created'.",
+    "Note ids are opaque strings generated by the server.",
+    "The 200 and 10,000 character limits are inclusive."
+  ]
+}

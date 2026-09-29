@@ -64,5 +64,6 @@
       "sourceRefs": ["S2"]
     }
   ],
-  "openQuestions": []
+  "openQuestions": [],
+  "assumptions": []
 }

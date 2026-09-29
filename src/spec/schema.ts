@@ -94,6 +94,7 @@ const ServerShape = z.strictObject({
     storage: z.enum(["none", "memory", "sqlite-file"]),
     tools: z.array(ToolSpec), // count limits are policy (spec gate), not shape
     openQuestions: z.array(z.string().min(1)),
+    assumptions: z.array(z.string().min(1)), // small defaults the agent applied; never blocks the build
 });
 
 export const ServerSpec = ServerShape.superRefine((spec, ctx) => checkServer(spec, ctx));

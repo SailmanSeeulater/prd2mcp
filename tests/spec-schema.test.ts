@@ -85,6 +85,13 @@ const broken: [string, string, (s: Record<string, any>) => void, string, string]
     "bare lowercase hostname",
   ],
   [
+    "missing assumptions list",
+    "notes.json",
+    (s) => delete s.assumptions,
+    "assumptions",
+    "expected array",
+  ],
+  [
     "unknown storage backend",
     "notes.json",
     (s) => (s.storage = "redis"),
@@ -104,6 +111,14 @@ describe("broken specs fail with readable errors", () => {
       expect(errors.some((e) => e.startsWith(`${path}: `) && e.includes(message))).toBe(true);
     });
   }
+});
+
+describe("assumptions never block", () => {
+  it("a spec with assumptions and no open questions is valid", () => {
+    const spec = load("notes.json");
+    spec.assumptions = ["Rounding uses full precision."];
+    expect(parseSpec(spec).ok).toBe(true);
+  });
 });
 
 describe("NEEDS_INPUT specs are representable", () => {
