@@ -41,7 +41,7 @@ export function createServer(store = new NoteStore()): McpServer {
         "list_notes",
         {
             title: "List notes",
-            description: "List all notes currently sotredm oldest first.",
+            description: "List all notes currently stored, oldest first.",
             inputSchema: {},
             outputSchema: { notes: z.array(z.object(noteShape)) },
         },
@@ -55,7 +55,7 @@ export function createServer(store = new NoteStore()): McpServer {
         "get_note",
         {
             title: "Get note",
-            description: "Getch a single note by its id.",
+            description: "Fetch a single note by its id.",
             inputSchema: { id: z.string().describe("Id of the note") },
             outputSchema: noteShape,
         },
